@@ -4,11 +4,9 @@ function getPostData(ctx) {
     try {
       let str = '';
       ctx.req.on('data',(chunk)=>{
-        //console.log('chunk:',chunk)
         str += chunk;
       });
       ctx.req.on('end',(chunk)=>{
-        //consoole.log('str:'+str);
         resolve(str);
       });
     } catch (err) {
