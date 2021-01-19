@@ -6,10 +6,13 @@ const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const router = require('koa-router')();
 const views = require('koa-views');
+const serve = require('koa-static');
 const getPostData = require('./unit/common');
 
 const app = new Koa();
 app.use(bodyParser());
+// 可配置多个static
+app.use(serve(__dirname+'/static'));
 app.use(views(__dirname,{
   extension: 'ejs',
 }));
@@ -19,12 +22,12 @@ router.get('/',async(ctx)=>{
 });
 
 router.post('/doApp',async(ctx)=>{
-  // koa-bodyparse 寫法
+  //koa-bodyparse 寫法
   // console.log('body:',ctx.request.body, typeof ctx.request.body);
   // ctx.body = ctx.request.body;
   // 原生写法
   const data = await getPostData(ctx);
-  console.log('原生获取post data',data);
+  console.log(data);
   ctx.body = data;
 })
 
