@@ -8,6 +8,7 @@
 const Koa = require('koa');
 const router = require('koa-router')();
 const session = require('koa-session');
+const FileStore = require('session-file-store')(session);
 const views = require('koa-views');
 
 const app = new Koa();
