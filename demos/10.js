@@ -85,7 +85,12 @@ app.get('/logout', async(req, res) => {
   const sessionId = await read(`./dictionary/${token}.txt`);
   // console.log('sessionId',sessionId);
   if(sessionId){
-    req.sessionStore.destroy(sessionId);
+    req.sessionStore.destroy(sessionId,()=>{
+       return res.json({
+          code:200,
+          msg:'success'
+       })
+   });
     fs.unlink(`./dictionary/${token}.txt`, (err) => {
       if (err) throw err;
         console.log('文件已被删除');
@@ -94,7 +99,6 @@ app.get('/logout', async(req, res) => {
   }else{
     console.log('登录失败!!!');
   }
-  res.send('ok');
   // res.send('login page 已退出:'+'<br/>');
   // req.session.destroy(token);
   // fs.readFile(`./dictionary/${token}.txt`,(err,data)=>{
