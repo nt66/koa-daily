@@ -1,4 +1,4 @@
-/**
+/*
  * 统一用户中心登录demo
  * express
  */
@@ -83,19 +83,23 @@ app.get('/login', (req, res) => {
 app.get('/logout', async(req, res) => {
   const {token} = req.query;
   const sessionId = await read(`./dictionary/${token}.txt`);
-  // console.log('sessionId',sessionId);
   if(sessionId){
-    req.sessionStore.destroy(sessionId,()=>{
+    req.sessionStore.destroy(sessionId,(err)=>{
+       if(err){
+           return res.json({
+              code:500,
+              msg:`server err:${err}`
+           })
+       }
        return res.json({
           code:200,
           msg:'success'
        })
    });
-    fs.unlink(`./dictionary/${token}.txt`, (err) => {
+   fs.unlink(`./dictionary/${token}.txt`, (err) => {
       if (err) throw err;
         console.log('文件已被删除');
-    });
-    // res.send('用户已退出!!!:'+'<br/>');
+   });
   }else{
     console.log('登录失败!!!');
   }
