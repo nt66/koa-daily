@@ -83,6 +83,9 @@ app.get('/login', (req, res) => {
 app.get('/logout', async(req, res) => {
   const {token} = req.query;
   const sessionId = await read(`./dictionary/${token}.txt`);
+  const sessionStr = await read(`./sessions/${sessionId}.json`);
+  const sessionObj = JSON.parse(sessionStr);
+  console.log('sessionObj&token:',sessionStr,sessionObj.token);
   if(sessionId){
     req.sessionStore.destroy(sessionId,(err)=>{
        if(err){
